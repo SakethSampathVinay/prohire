@@ -1,0 +1,18 @@
+<div class="max-lg:hidden ml-5">
+
+    <h1 class="text-lg font-medium py-4">Search by Categories</h1>
+    <div class="space-y-4" *ngFor="let jobs of jobCategories; let i = index">
+        <div class="flex gap-3 items-center">
+            <input type="checkbox" class="scale-125 " [id]="'job-' + i">
+            <label [for]="'job-' + i">{{jobs}}</label>
+        </div>
+    </div>
+
+    <h1 class="text-lg font-medium py-4">Search by Location</h1>
+    <div class="space-y-4" *ngFor="let location of jobLocations; let i = index">
+        <div class="flex gap-3 items-center">
+            <input type="checkbox" class="scale-125" [id]="'location-' + i">
+            <label [for]="'location-' + i">{{location}}</label>
+        </div>
+    </div>
+</div>

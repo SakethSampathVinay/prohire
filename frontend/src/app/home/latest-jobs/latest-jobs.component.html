@@ -1,0 +1,37 @@
+<div class="px-4 md:px-12">
+    <h1 class="text-3xl font-bold mb-2">Latest jobs</h1>
+    <p class="text-gray-600 mb-6">Get your desired job from top companies</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let job of jobsData"
+            class="border border-white rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-all">
+            <div class="flex items-center gap-2 mb-4">
+                <img [src]="job.companyId.image" alt="Company Logo" class="w-8 h-8 object-contain" />
+            </div>
+
+            <h3 class="text-xl font-semibold mb-2">{{ job.title }}</h3>
+
+            <div class="flex gap-2 mb-4 flex-wrap text-sm">
+                <span class="bg-blue-50 text-blue-800 px-3 py-1 rounded border border-blue-200">
+                    {{ job.location }}
+                </span>
+                <span class="bg-red-50 text-red-800 px-3 py-1 rounded border border-red-200">
+                    {{ job.level }}
+                </span>
+            </div>
+
+            <p class="text-gray-600 text-sm mb-4">
+                {{ job.description | slice: 0:150 }}...
+            </p>
+
+            <div class="flex gap-3 text-sm">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
+                    Apply now
+                </button>
+                <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition-all">
+                    Learn more
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
