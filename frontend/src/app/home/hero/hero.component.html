@@ -7,13 +7,13 @@
         <div class="flex items-center justify-between bg-white rounded text-gray-600 max-w-xl pl-4 mx-4 sm:mx-auto">
             <div class="flex items-center">
                 <img [src]="searchIcon" alt="Search Icon" class="h-4 sm:h-5">
-                <input type="text" class="max-sm:text-xs p-2 rounded outline-none w-full" placeholder="Search for jobs">
+                <input [(ngModel)]="searchQuery" type="text" class="max-sm:text-xs p-2 rounded outline-none w-full" placeholder="Search for jobs">
             </div>
             <div class="flex items-center">
                 <img [src]="locationIcon" alt="Location Icon" class="h-4 sm:h-5">
-                <input type="text" class="max-sm:text-xs p-2 rounded outline-none w-full" placeholder="Search for jobs">
+                <input [(ngModel)]="locationQuery" type="text" class="max-sm:text-xs p-2 rounded outline-none w-full" placeholder="Search for jobs">
             </div>
-            <button class="bg-blue-600 px-6 py-2 rounded text-white m-1">Search</button>
+            <button class="bg-blue-600 px-6 py-2 rounded text-white m-1" (click)="onSearchButton()">Search</button>
         </div>
     </div>
 </div>

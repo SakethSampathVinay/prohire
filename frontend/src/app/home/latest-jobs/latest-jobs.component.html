@@ -3,7 +3,7 @@
     <p class="text-gray-600 mb-6">Get your desired job from top companies</p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div *ngFor="let job of jobsData"
+        <div *ngFor="let job of jobs"
             class="border border-white rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-all">
             <div class="flex items-center gap-2 mb-4">
                 <img [src]="job.companyId.image" alt="Company Logo" class="w-8 h-8 object-contain" />
@@ -28,7 +28,8 @@
                 <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
                     Apply now
                 </button>
-                <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition-all">
+                <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition-all"
+                    [routerLink]="['/jobdetails', job._id]">
                     Learn more
                 </button>
             </div>
