@@ -21,7 +21,7 @@
             </div>
 
             <p class="text-gray-600 text-sm mb-4">
-                {{ job.description | slice: 0:150 }}...
+                {{getPlanText(job.description).slice(0, 150)}}...
             </p>
 
             <div class="flex gap-3 text-sm">

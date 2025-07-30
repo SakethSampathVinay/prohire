@@ -1,1 +1,40 @@
-<h3 class="">More Jobs from Slack</h3>
+<div class="px-4 md:px-12 mt-10">
+    <h2 class="text-lg font-bold mb-4">
+        More jobs from {{ relatedJobs[0]?.companyId?.name }}
+    </h2>
+
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-1">
+        <div *ngFor="let job of relatedJobs.slice(0, 3)"
+            class="border border-white rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center gap-2 mb-4">
+                <img [src]="job.companyId.image" alt="Company Logo" class="w-8 h-8 object-contain" />
+                <span class="text-sm text-gray-600">{{ job.companyId.name }}</span>
+            </div>
+
+            <h3 class="text-xl font-semibold mb-2">{{ job.title }}</h3>
+
+            <div class="flex flex-wrap gap-2 mb-4 text-sm">
+                <span class="bg-blue-50 text-blue-800 px-3 py-1 rounded border border-blue-200">
+                    {{ job.location }}
+                </span>
+                <span class="bg-red-50 text-red-800 px-3 py-1 rounded border border-red-200">
+                    {{ job.level }}
+                </span>
+            </div>
+
+            <p class="text-gray-600 text-sm mb-4">
+                {{getPlainText(job.description).slice(0, 150)}}...
+            </p>
+
+            <div class="flex flex-wrap gap-3 text-sm">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    Apply now
+                </button>
+                <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition"
+                    [routerLink]="['/jobdetails', job._id]">
+                    Learn more
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

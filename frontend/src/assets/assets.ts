@@ -172,7 +172,7 @@ export const jobsData: Job[] = [
         level: "Senior Level",
         companyId: {
             "_id": "670e4d25ca9fda8f1bf359b9",
-            "name": "Slack",
+            "name": "Software Tech Solutions",
             "email": "slack@demo.com",
             "image": assets.company_icon,
         },
@@ -205,7 +205,7 @@ export const jobsData: Job[] = [
         level: "Intermediate Level",
         companyId: {
             "_id": "670e4d25ca9fda8f1bf359b9",
-            "name": "Slack",
+            "name": "Software Tech Solutions",
             "email": "slack@demo.com",
             "image": assets.company_icon,
         },

@@ -15,4 +15,9 @@ export class LatestJobsComponent {
 
   @Input() jobs: any[] = [];
 
+  getPlanText(html: string) {
+    const temp = document.createElement('div')
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || '';
+  }
 }
