@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { assets, jobsData } from '../../../assets/assets';
+import { assets, Job, jobsData } from '../../../assets/assets';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { LatestJobsService } from '../../services/latest-jobs.service';
 
 @Component({
   selector: 'app-latest-jobs',
@@ -13,10 +14,19 @@ import { Router, RouterLink } from '@angular/router';
 export class LatestJobsComponent {
   jobsData = jobsData;
 
-  @Input() jobs: any[] = [];
+  constructor(private latestJobsService: LatestJobsService) {}
+
+  ngOnInit() {
+    this.latestJobsService.getLatestJobs().subscribe((res) => {
+      this.jobs = res.Jobs;
+      console.log(this.jobs);
+    });
+  }
+
+  @Input() jobs: Job[] = [];
 
   getPlanText(html: string) {
-    const temp = document.createElement('div')
+    const temp = document.createElement('div');
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || '';
   }

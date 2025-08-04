@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { assets, jobsData } from '../../assets/assets';
 import { ActivatedRoute } from '@angular/router';
 import { RelatedjobsComponent } from './relatedjobs/relatedjobs.component';
+import { LatestJobsService } from '../services/latest-jobs.service';
 @Component({
   selector: 'app-job-details',
   imports: [RelatedjobsComponent],
@@ -17,22 +18,27 @@ export class JobDetailsComponent {
   id: string | null = null;
   jobDetails: any;
   relatedJobs: any[] = [];
+  jobsList: any[] = [];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private latestJobs: LatestJobsService
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
       if (this.id) {
-        this.jobDetails = jobsData.find((job) => job._id === this.id);
-      }
-
-      if (this.jobDetails) {
-        this.relatedJobs = jobsData.filter(
-          (relJobs) =>
-            relJobs.companyId.name === this.jobDetails.companyId.name &&
-            relJobs._id !== this.id
-        );
+        this.latestJobs.getLatestJobs().subscribe((res) => {
+          this.jobsList = res.Jobs;
+          console.log(this.jobsList);
+          this.jobDetails = this.jobsList.find((job) => job._id === this.id);
+          this.relatedJobs = this.jobsList.filter(
+            (relJobs) =>
+              relJobs.companyId.name === this.jobDetails.companyId.name &&
+              relJobs._id !== this.id
+          );
+        });
       }
     });
   }

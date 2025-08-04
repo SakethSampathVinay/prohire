@@ -24,7 +24,6 @@ class CompanyWithToken(BaseModel):
     company: CompanyModelResponse
 
 class PostJob(BaseModel):
-    id: Optional[str] = None
     title: str 
     location: str 
     level: str 
