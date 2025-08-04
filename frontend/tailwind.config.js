@@ -1,6 +1,5 @@
-import type { Config } from 'tailwindcss';
-
-const config: Config = {
+// /** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     './src/**/*.{html,ts}',
   ],
@@ -11,7 +10,7 @@ const config: Config = {
       },
       keyframes: {
         marquee: {
-          '0%': { transform: 'translateX(0%' },
+          '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
         },
       },
@@ -19,5 +18,3 @@ const config: Config = {
   },
   plugins: [],
 };
-
-export default config;

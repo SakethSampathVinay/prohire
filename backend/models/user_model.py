@@ -1,19 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
-class Company(BaseModel):
+class Register(BaseModel):
     name: str
-    email: str
-    image: Optional[str] = None
+    email: EmailStr
+    password: str
 
-
-class Job(BaseModel):
-    title: str
-    location: str
-    level: str
-    companyId: Company
-    description: str
-    salary: int
-    date: int
-    category: str
-
+class Login(BaseModel):
+    email: EmailStr 
+    password: str

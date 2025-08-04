@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
-from routes.user_routes import router as user_router 
-from routes.login_routes import login_router
+from routes.user_routes import user_router
+from routes.admin_routes import admin_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -11,15 +11,15 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          # You can also use ["*"] to allow all origins
+    allow_origins=origins,          
     allow_credentials=True,
-    allow_methods=["*"],            # Allows all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],            # Allows all headers
+    allow_methods=["*"],            
+    allow_headers=["*"],            
 )
 
 
 app.include_router(user_router)
-app.include_router(login_router)
+app.include_router(admin_router)
 
 
 @app.get('/')
