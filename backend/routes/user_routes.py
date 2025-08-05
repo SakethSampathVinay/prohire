@@ -1,8 +1,11 @@
-from fastapi import FastAPI, APIRouter, HTTPException, status, Depends
-from models.user_model import Register, Login 
+from fastapi import FastAPI, APIRouter, HTTPException, status, Depends, Header
+from models.user_model import Register, Login, JobApplication
 from database.database import get_database
 from utils.hash import hash_password, verify_password
 from utils.jwt import create_access_token, verify_access_token
+from typing import Union, List
+from bson.objectid import ObjectId
+from datetime import datetime
 
 user_router = APIRouter()
 
@@ -18,7 +21,7 @@ async def register_user(user: Register):
 
     try:
         result = await db.users.insert_one(user_data)
-        access_token = create_access_token(data= {'sub': user.email}) #Generate Token
+        access_token = create_access_token(data={'sub': str(result.inserted_id)})
         return {"message": "User Created Successfully", "status": 200, "User Data": str(user_data), "token": access_token}
     
     except Exception as e:
@@ -37,7 +40,7 @@ async def login_user(user: Login):
         if not verify_password(user.password, user_data['password']):
             raise HTTPException(status_code = 400, detail = "Incorrect Password")
         
-        access_token = create_access_token(data={"sub": user.email}) #generate token
+        access_token = create_access_token(data={'sub': str(user_data['_id'])})
         
         user_data['_id'] = str(user_data['_id'])
         user_data.pop("password")
@@ -62,3 +65,83 @@ async def get_jobs():
         return {'message': "Jobs Retrieved Successfully", "status": 200, "Jobs": jobs }
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
+
+async def get_current_user_id(authorization: str = Header(...)) -> Union[str, ObjectId]:
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid token format")
+
+    token = authorization.split(" ")[1]
+    
+    try:
+        payload = verify_access_token(token)
+        user_id = payload.get("sub")  # Assuming 'subject' is user_id
+
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid token payload")
+
+        db = get_database()
+        user = await db.users.find_one({"_id": ObjectId(user_id)})
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        return str(user["_id"]) 
+    except Exception:
+        raise HTTPException(status_code=401, detail="Token verification failed")
+
+@user_router.post('/apply-jobs')
+async def apply_jobs(job_id: str, user_id: str = Depends(get_current_user_id)):
+    db = get_database()
+
+    try:
+        existing_application = await db.job_applications.find_one({
+            "job_id": ObjectId(job_id),
+            "user_id": ObjectId(user_id)
+        })
+
+        if existing_application:
+            raise HTTPException(status_code = 400, detail = "Already Applied for this Job.")
+
+        result = await db.job_applications.insert_one({
+            "job_id": ObjectId(job_id),
+            "user_id": ObjectId(user_id),
+            "applied_at": datetime.utcnow(),
+            "status": "Pending",
+        })
+        
+        return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id) , "job_id": job_id, "user_id": user_id}
+    
+    except Exception as e:
+        raise HTTPException(status_code = 401, detail = str(e))
+
+@user_router.get("/get-applied-jobs", response_model=List[JobApplication])
+async def get_applied_jobs(user_id: str = Depends(get_current_user_id)):
+    db = get_database()
+
+    try:
+        applied_jobs = await db.job_applications.find({"user_id": ObjectId(user_id)}).to_list(None)
+
+        response: List[JobApplication] = []
+
+        for app in applied_jobs:
+            job = await db.collection.find_one({"_id": app["job_id"]})
+            if not job:
+                continue
+
+            company = job.get("companyId", {})
+
+            job_data = JobApplication(
+                logo=company.get("image", ""),
+                company_name=company.get("name", ""),
+                title=job.get("title", ""),
+                location=job.get("location", ""),
+                date=app.get("applied_at", datetime.now()),
+                status=app.get("status", "Pending")
+            )
+
+            response.append(job_data)
+        
+        return response
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
