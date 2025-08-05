@@ -41,7 +41,7 @@ async def login_user(user: Login):
         
         user_data['_id'] = str(user_data['_id'])
         user_data.pop("password")
-        return {'message': "User Logged Successfully", "status": 200, "User Data": user_data, "token": access_token}
+        return {'message': "User Logged Successfully", "status": 200, "userData": user_data, "token": access_token}
     
     except Exception as e:
         print(e)

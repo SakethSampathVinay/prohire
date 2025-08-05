@@ -6,6 +6,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { authGuard } from './guards/auth.guard';
+import { loginSignupGuard } from './guards/login-signup.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [authGuard] },
@@ -19,7 +20,7 @@ export const routes: Routes = [
     component: ApplicationsComponent,
     canActivate: [authGuard],
   },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [loginSignupGuard]},
+  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
   { path: '**', component: PagenotfoundComponent },
 ];
