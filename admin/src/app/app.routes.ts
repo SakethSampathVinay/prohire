@@ -10,22 +10,28 @@ import { authGuard } from './guards/auth.guard';
 import { loginSignupGuard } from './guards/login-signup.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'manage-jobs',
+        component: ManageJobsComponent,
+        canActivate: [authGuard],
+      },
+      { path: 'add-job', component: AddJobComponent, canActivate: [authGuard] },
+      {
+        path: 'view-applications',
+        component: ViewApplicationsComponent,
+        canActivate: [authGuard],
+      },
+    ],
+  },
   {
     path: 'register',
     component: SignupComponent,
     canActivate: [loginSignupGuard],
   },
-  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
-  {
-    path: 'manage-jobs',
-    component: ManageJobsComponent,
-    canActivate: [authGuard],
-  },
-  { path: 'add-job', component: AddJobComponent, canActivate: [authGuard] },
-  {
-    path: 'view-applications',
-    component: ViewApplicationsComponent,
-    canActivate: [authGuard],
-  },
+  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] }
 ];

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-manage-jobs',
   imports: [],
   templateUrl: './manage-jobs.component.html',
-  styleUrl: './manage-jobs.component.css'
+  styleUrl: './manage-jobs.component.css',
 })
-export class ManageJobsComponent {
-
-}
+export class ManageJobsComponent {}
