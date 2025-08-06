@@ -1,6 +1,16 @@
-<div class="shadow py-4 flex flex-row">
-    <div class="container px-4 2xl:px-20 mx-auto flex justify-between items-center">
+<div class="shadow py-4 px-6 bg-white flex flex-wrap justify-between items-center gap-4">
+    <div class="flex items-center space-x-4">
         <img src="https://res.cloudinary.com/dgtfgihga/image/upload/v1753714978/Screenshot_2025-07-28_203234_gmzguo.png"
-            alt="logo" class="w-50 h-15 bg-white cursor-pointer" routerLink="/" />
+            alt="logo" class="h-12 w-auto cursor-pointer" routerLink="/" />
+    </div>
+    <div class="flex items-center space-x-4">
+        <img [src]="image" alt="Profile" class="h-12 w-12 rounded-full object-cover" />
+        <h3 class="text-gray-700 text-base font-medium">
+            Hello, {{ name }} Recruiter
+        </h3>
+        <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-200"
+            (click)="logout()">
+            Logout
+        </button>
     </div>
 </div>

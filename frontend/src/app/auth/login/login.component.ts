@@ -21,9 +21,12 @@ export class LoginComponent {
 
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
-    if(token) {
-      this.router.navigate(['/']);
+    const isBrowser = typeof window !== 'undefined';
+    if (isBrowser) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        this.router.navigate(['/']);
+      }
     }
   }
 

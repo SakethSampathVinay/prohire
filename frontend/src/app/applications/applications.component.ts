@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { assets, jobsApplied } from '../../assets/assets';
+import { assets, JobApplication, jobsApplied } from '../../assets/assets';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApplicationsService } from '../services/applications.service';
 @Component({
   selector: 'app-applications',
   imports: [CommonModule, FormsModule],
@@ -10,8 +11,21 @@ import { FormsModule } from '@angular/forms';
 })
 export class ApplicationsComponent {
   assets = assets;
-  jobsApplied: any[] = jobsApplied;
   isEdit = false;
+  appliedJobs: JobApplication[] = [];
+
+  constructor(private applications: ApplicationsService) {}
+
+  ngOnInit() {
+    this.applications.getAppliedJobs().subscribe({
+      next: (res) => {
+        this.appliedJobs = res;
+      },
+      error: (err) => {
+        console.log('Error Fetching Applied Jobs: ', err);
+      },
+    });
+  }
 
   getStatusClass(status: string): string {
     if (status === 'Accepted') {

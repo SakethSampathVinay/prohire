@@ -145,3 +145,4 @@ async def get_applied_jobs(user_id: str = Depends(get_current_user_id)):
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+

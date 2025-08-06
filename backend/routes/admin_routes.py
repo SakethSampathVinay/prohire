@@ -1,42 +1,58 @@
-from fastapi import FastAPI, APIRouter, HTTPException, status, Depends, Header, Path
+from fastapi import FastAPI, APIRouter, HTTPException, status, Depends, Header, Path, File, UploadFile, Form
 from database.database import get_database
-from models.admin_model import CompanyRegister, CompanyLogin, CompanyModelResponse, CompanyWithToken, PostJob
+from models.admin_model import CompanyLogin, CompanyModelResponse, CompanyWithToken, PostJob
 from utils.hash import hash_password, verify_password
 from utils.jwt import create_access_token, verify_access_token
 from bson.objectid import ObjectId
+import cloudinary
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name = "dgtfgihga",
+    api_key = "989581749653354",
+    api_secret = "3Q5RzmOns5KJG2VRc0v28laS5_U",
+    secure = True
+)
 
 admin_router = APIRouter(prefix = "/admin")
 
 @admin_router.post("/register", response_model = CompanyWithToken)
-async def admin_register(company: CompanyRegister):
+async def admin_register(name: str = Form(...), email: str = Form(...), password: str = Form(...), image: UploadFile = File(...)):
     db = get_database()
 
-    if not (company.name and company.email and company.password and company.image):
-        raise HTTPException(status_code = 400, detail = "Missing required fields")
-
-    if await db.admin_collections.find_one({"email": company.email}):
-        raise HTTPException(status_code = 400, detail = "Email already exists.")
-
-    admin_data = company.dict()
-    admin_data["password"] = hash_password(company.password)
-
+    exisiting_email = await db.admin_collections.find_one({"email": email})
+    if exisiting_email:
+        raise HTTPException(status_code = 400, detail = "Email already exists")
+    
     try:
-        result = await db.admin_collections.insert_one(admin_data)
-        # print(result)
-        access_token = create_access_token(data = {"subject": company.email})
-        # print(access_token)
-        
-        return {
-            "access_token": access_token,
-            "company": CompanyModelResponse(
+        upload_image = cloudinary.uploader.upload(image.file)
+        image_url = upload_image.get("secure_url")
+
+        hashed_pw = hash_password(password)
+        data = {
+            "name": name,
+            "email": email,
+            "password": hashed_pw,
+            "image": image_url
+        }
+
+        result = await db.admin_collections.insert_one(data)
+        token = create_access_token({"sub": email})
+
+        return CompanyWithToken(
+            access_token = token,
+            company = CompanyModelResponse(
                 id = str(result.inserted_id),
-                name = company.name,
-                email = company.email,
-                image = company.image,
+                name = name,
+                email = email,
+                password = password,
+                image = image_url,
             )
-        } 
+        )
+
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
+
 
 @admin_router.post("/login", response_model = CompanyWithToken)
 async def admin_login(company: CompanyLogin):
