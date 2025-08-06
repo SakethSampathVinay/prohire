@@ -1,1 +1,62 @@
-<p>add-job works!</p>
+<form #addjobs="ngForm" (ngSubmit)="onAddJob()" class="max-w-3xl p-6 rounded-xl space-y-6">
+    <div class="space-y-2">
+        <label for="jobTitle" class="block text-sm font-medium text-gray-600">Job Title</label>
+        <input id="jobTitle" type="text" placeholder="Type here" [(ngModel)]="data.title" name="title"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+    <div class="space-y-2">
+        <label for="jobDesc" class="block text-sm font-medium text-gray-700">Job Description</label>
+        <input id="jobDesc" type="text" placeholder="Type here" [(ngModel)]="data.description" name="description"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div class="space-y-2">
+            <label for="jobCategory" class="block text-sm font-medium text-gray-700">Job Category</label>
+            <select id="jobCategory" [(ngModel)]="data.category" name="category"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Programming">Programming</option>
+                <option value="DataScience">Data Science</option>
+                <option value="Designing">Designing</option>
+                <option value="Networking">Networking</option>
+                <option value="Management">Management</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Cybsersecurity">Cybersecurity</option>
+            </select>
+        </div>
+        <div class="space-y-2">
+            <label for="jobLocation" class="block text-sm font-medium text-gray-700">Job Location</label>
+            <select id="jobLocation" [(ngModel)]="data.location" name="location"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Bangalore">Bangalore</option>
+                <option value="Washington">Washington</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="California">California</option>
+                <option value="Chennai">Chennai</option>
+                <option value="New York">New York</option>
+            </select>
+        </div>
+        <div class="space-y-2">
+            <label for="jobLevel" class="block text-sm font-medium text-gray-700">Job Level</label>
+            <select id="jobLevel" [(ngModel)]="data.level" name="level"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Intern Level">Intern Level</option>
+                <option value="Beginner Level">Beginner Level</option>
+                <option value="Mid Level">Mid Level</option>
+                <option value="Senior Level">Senior Level</option>
+                <option value="Manager Level">Manager Level</option>
+            </select>
+        </div>
+        <div class="space-y-2">
+            <label for="salary" class="block text-sm font-medium text-gray-700">Salary</label>
+            <input id="salary" type="number" placeholder="0" [(ngModel)]="data.salary" name="salary"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+    </div>
+    <div class="pt-4">
+        <button type="submit"
+            class="bg-black text-white py-2 px-4 rounded-md transition duration-200 font-semibold cursor-pointer">
+            ADD
+        </button>
+    </div>
+</form>

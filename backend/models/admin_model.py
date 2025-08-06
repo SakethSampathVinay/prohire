@@ -30,7 +30,7 @@ class PostJob(BaseModel):
     level: str 
     companyId: Optional[CompanyModelResponse] = None
     description: str 
-    salary: str
+    salary: int
     date: datetime = Field(default_factory = datetime.now)
     category: str
     isVisible: Optional[bool] = True
