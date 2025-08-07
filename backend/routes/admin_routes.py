@@ -155,3 +155,65 @@ async def update_job_visibility(job_id: str, is_visible: bool, current_company: 
             raise HTTPException(status_code=404, detail="Job not found or already set")
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@admin_router.get('/company-application/{companyId}')
+async def get_company_applications(companyId: str, current_company: dict = Depends(get_current_company)):
+    db = get_database()
+    try:
+        jobs = await db.collection.find({'companyId._id': companyId}).to_list(length=None)
+        if not jobs:
+            return {"Message": "No Jobs found in this company"}
+
+        # Build a mapping of job_id -> full job object
+        job_data = {str(job['_id']): job for job in jobs}
+
+        # Extract all job IDs
+        job_ids = list(job_data.keys())
+
+        # Find applications for these jobs
+        applications = await db.job_applications.find({
+            'job_id': {'$in': [ObjectId(jid) for jid in job_ids]}
+        }).to_list(length=None)
+
+        if not applications:
+            return {"applications": [], 'message': "no applications found"}
+
+        results = []
+        for app in applications:
+            user = await db.users.find_one({'_id': app['user_id']})
+            job = job_data.get(str(app['job_id']), {})
+
+            result = {
+                "job_id": str(app["job_id"]),
+                "title": job.get("title", "Unknown Job"),
+                "username": user["name"] if user else "Unknown",
+                "resumeUrl": app.get("resume_url", ""),
+                "status": app.get("status", ""),
+                "location": job.get("location", "Unknown"),
+                "level": job.get("level", ""),
+                "category": job.get("category", ""),
+                "salary": job.get("salary", ""),
+                "applied_at": app.get("applied_at", None)
+            }
+            results.append(result)
+
+        return {
+            "company_id": companyId,
+            "total_applications": len(results),
+            "applications": results
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@admin_router.put('/update-status/{application_id}')
+async def update_application_status(application_id: str, status: str, current_company: dict = Depends(get_current_company)):
+    db = get_database()
+    try:
+        result = await db.job_applications.update_one({'_id': ObjectId(application_id)}, {"$set": {"status": status}})
+        if result.matched_count == 0:
+            raise HTTPException(status_code = 404, detail = "Application Not found")
+        return {"message": "Status Updated Successfully"}
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))

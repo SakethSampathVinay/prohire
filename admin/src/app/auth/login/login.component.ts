@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent {
     password: '',
   };
 
-  constructor(private loginService: AuthService) {}
+  constructor(private loginService: AuthService, private router: Router) {}
 
   onLogin() {
     this.loginService.onLoginAdmin(this.data).subscribe({
@@ -25,7 +25,7 @@ export class LoginComponent {
         localStorage.setItem('name', res.company.name)
         localStorage.setItem('image', res.company.image)
         localStorage.setItem('companyId', res.company.id);
-        console.log(res);
+        this.router.navigate(['/manage-jobs']);
       },
       error: (err) => {
         console.log(err);

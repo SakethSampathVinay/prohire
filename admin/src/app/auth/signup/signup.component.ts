@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { read } from 'fs';
 import { AuthService } from '../../services/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
@@ -23,7 +22,7 @@ export class SignupComponent {
 
   imagePreview: string | ArrayBuffer | null = null;
 
-  constructor(private signUpService: AuthService) {}
+  constructor(private signUpService: AuthService, private router: Router) {}
 
 
   onChangeLogo(event: Event) {
@@ -71,6 +70,7 @@ export class SignupComponent {
         this.email = '';
         this.password = '';
         this.image = '';
+        this.router.navigate(['/manage-jobs'])
       }, 
       error: (err: any) => {
         console.log(err);
