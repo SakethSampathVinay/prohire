@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, status, Depends, Header
+from fastapi import FastAPI, APIRouter, HTTPException, status, Depends, Header, UploadFile, File
 from models.user_model import Register, Login, JobApplication
 from database.database import get_database
 from utils.hash import hash_password, verify_password
@@ -6,6 +6,15 @@ from utils.jwt import create_access_token, verify_access_token
 from typing import Union, List
 from bson.objectid import ObjectId
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name = "dgtfgihga",
+    api_key = "989581749653354",
+    api_secret = "3Q5RzmOns5KJG2VRc0v28laS5_U",
+    secure = True
+)
 
 user_router = APIRouter()
 
@@ -101,13 +110,18 @@ async def apply_jobs(job_id: str, user_id: str = Depends(get_current_user_id)):
 
         if existing_application:
             raise HTTPException(status_code = 400, detail = "Already Applied for this Job.")
+        
+        user = await db.users.find_one({'_id': ObjectId(user_id)})
+        if not user or 'resume_url' not in user:
+            raise HTTPException(status_code = 400, detail = "Resume not found")
 
         result = await db.job_applications.insert_one({
             "job_id": ObjectId(job_id),
             "user_id": ObjectId(user_id),
             "applied_at": datetime.utcnow(),
             "status": "Pending",
-            "isApplied": True
+            "isApplied": True,
+            "resume_url": user['resume_url']
         })
         
         return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id) , "job_id": job_id, "user_id": user_id, "isApplied": True}
@@ -159,3 +173,36 @@ async def get_applied_jobs(user_id: str = Depends(get_current_user_id)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@user_router.post('/upload-resume')
+async def upload_resume(resume: UploadFile = File(...),  user_id: str = Depends(get_current_user_id)):
+    db = get_database()
+
+    if resume.content_type != 'application/pdf':
+        raise HTTPException(status_code = 400, detail = "Only PDF's are allowed")
+
+    try:
+        file_bytes = await resume.read()
+
+        result = cloudinary.uploader.upload(
+            file_bytes,
+            resource_type = "raw",
+            folder = "resumes",
+            overwrite = True,
+            public_id=f"resume_{user_id}"
+        )
+
+        await db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"resume_url": result["secure_url"]}},
+            upsert=True
+        )
+
+        return {
+            "message": "Resume uploaded successfully",
+            "secure_url": result.get("secure_url"),
+            "public_id": result.get("public_id"),
+            "user_id": user_id
+        }
+    
+    except CloudinaryError as e:
+        raise HTTPException(status_code = 500, detail = f"Cloudinary error: {str(e)}")

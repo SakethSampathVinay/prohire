@@ -5,7 +5,7 @@
             <div class="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg mr-2">
                 Select Resume
             </div>
-            <input type="file" id="ResumeUpload" accept="application/pdf" class="" (change)="onFileSelected($event)"/>
+            <input type="file" id="ResumeUpload" accept="application/pdf" class="" (change)="onFileSelected($event)" />
             <img [src]="assets.profile_upload_icon" alt="Upload Icon" class="w-10 h-20 ml-2" />
         </label>
         <button
@@ -16,7 +16,10 @@
     </div>
 
     <div class="flex gap-2 mt-2" *ngIf="isEdit === false">
-        <a href="" class="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg">Resume</a>
+        <a [href]="uploadedResumeUrl" target="_blank"
+            class="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-200 transition">
+            View Resume
+        </a>
         <button class="text-gray-500 border border-gray-300 rounded-lg px-4 py-2 cursor-pointer"
             (click)="onEdit()">Edit</button>
     </div>
