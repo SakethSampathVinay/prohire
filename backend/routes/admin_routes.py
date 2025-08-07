@@ -184,6 +184,7 @@ async def get_company_applications(companyId: str, current_company: dict = Depen
             job = job_data.get(str(app['job_id']), {})
 
             result = {
+                "application_id": str(app["_id"]), 
                 "job_id": str(app["job_id"]),
                 "title": job.get("title", "Unknown Job"),
                 "username": user["name"] if user else "Unknown",

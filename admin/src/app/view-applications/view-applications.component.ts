@@ -28,4 +28,15 @@ export class ViewApplicationsComponent implements OnInit {
       }
     });
   }
+
+  onStatusChange(item: any) {
+    this.viewApplications.changeStatus(item.application_id, item.status).subscribe({
+      next: (res) => {
+        console.log("Status updated successfully", res);
+      },
+      error: (err) => {
+        console.error("Error updating status", err);
+      }
+    })
+  }
 }

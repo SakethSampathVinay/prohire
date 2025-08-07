@@ -18,7 +18,21 @@ export class ViewApplicationsService {
     };
   }
 
-  onViewApplication(companyId: string | null):Observable<any> {
-    return this.http.get(`${this.backendUrl}/company-application/${companyId}`, this.getHeaders())
+  onViewApplication(companyId: string | null): Observable<any> {
+    return this.http.get(
+      `${this.backendUrl}/company-application/${companyId}`,
+      this.getHeaders()
+    );
+  }
+
+  changeStatus(
+    applicationId: string | null,
+    status: string | null
+  ): Observable<any> {
+    return this.http.put(
+      `${this.backendUrl}/update-status/${applicationId}?status=${status}`,
+      null,
+      this.getHeaders()
+    );
   }
 }
