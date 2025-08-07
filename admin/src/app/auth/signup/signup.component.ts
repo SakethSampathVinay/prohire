@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })

@@ -107,12 +107,25 @@ async def apply_jobs(job_id: str, user_id: str = Depends(get_current_user_id)):
             "user_id": ObjectId(user_id),
             "applied_at": datetime.utcnow(),
             "status": "Pending",
+            "isApplied": True
         })
         
-        return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id) , "job_id": job_id, "user_id": user_id}
+        return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id) , "job_id": job_id, "user_id": user_id, "isApplied": True}
     
     except Exception as e:
         raise HTTPException(status_code = 401, detail = str(e))
+
+@user_router.get('/check-application/{job_id}')
+async def check_application(job_id: str, user_id: str = Depends(get_current_user_id)):
+    db = get_database()
+    try:
+        existing_application = await db.job_applications.find_one({
+            'job_id': ObjectId(job_id),
+            'user_id': ObjectId(user_id)
+        })
+        return {"isApplied": bool(existing_application)}
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))
 
 @user_router.get("/get-applied-jobs", response_model=List[JobApplication])
 async def get_applied_jobs(user_id: str = Depends(get_current_user_id)):

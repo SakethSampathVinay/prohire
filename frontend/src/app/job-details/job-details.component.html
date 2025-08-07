@@ -29,7 +29,8 @@
                 </div>
             </div>
             <div class="flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center">
-                <button class="bg-blue-600 p-2.5 px-10 text-white rounded">Apply Now</button>
+                <button [disabled]="isApplied" class="bg-blue-600 p-2.5 px-10 text-white rounded"
+                    (click)="onApplyNow()">{{applyNowDisplay}}</button>
                 <p class="mt-1 text-gray-600">Posted 35 minutes ago</p>
             </div>
         </div>
@@ -38,7 +39,7 @@
             <div class="w-full lg:w-2/3">
                 <h2 class="font-bold text-2xl mb-4">Job Description</h2>
                 <div class="text-gray-700" [innerHTML]="jobDetails.description"></div>
-                <button class="bg-blue-600 p-2.5 px-10 text-white rounded mt-10">Apply Now</button>
+                <button class="bg-blue-600 p-2.5 px-10 text-white rounded mt-10">{{applyNowDisplay}}</button>
             </div>
 
             <!-- Right: Related Jobs -->

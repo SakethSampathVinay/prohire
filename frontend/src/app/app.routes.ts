@@ -20,7 +20,11 @@ export const routes: Routes = [
     component: ApplicationsComponent,
     canActivate: [authGuard],
   },
-  { path: 'register', component: RegisterComponent, canActivate: [loginSignupGuard]},
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [loginSignupGuard],
+  },
   { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
-  { path: '**', component: PagenotfoundComponent },
+  // { path: '**', component: PagenotfoundComponent },
 ];

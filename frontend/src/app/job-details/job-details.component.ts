@@ -3,6 +3,8 @@ import { assets, jobsData } from '../../assets/assets';
 import { ActivatedRoute } from '@angular/router';
 import { RelatedjobsComponent } from './relatedjobs/relatedjobs.component';
 import { LatestJobsService } from '../services/latest-jobs.service';
+import { ApplyNowService } from '../services/apply-now.service';
+
 @Component({
   selector: 'app-job-details',
   imports: [RelatedjobsComponent],
@@ -19,10 +21,13 @@ export class JobDetailsComponent {
   jobDetails: any;
   relatedJobs: any[] = [];
   jobsList: any[] = [];
+  isApplied: boolean = false;
+  applyNowDisplay: string = 'Apply Now';
 
   constructor(
     private route: ActivatedRoute,
-    private latestJobs: LatestJobsService
+    private latestJobs: LatestJobsService,
+    private applyNow: ApplyNowService
   ) {}
 
   ngOnInit() {
@@ -41,5 +46,32 @@ export class JobDetailsComponent {
         });
       }
     });
+
+    this.applyNow.checkIfApplied(this.id).subscribe({
+      next: (res) => {
+        if (res.isApplied) {
+          this.applyNowDisplay = 'Applied';
+          this.isApplied = true;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  onApplyNow() {
+    if (this.id) {
+      this.applyNow.applyNow(this.id).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.applyNowDisplay = 'Applied';
+          this.isApplied = true;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 }

@@ -8,8 +8,12 @@ export const loginSignupGuard: CanActivateFn = (route, state) => {
 
   if (isBrowser) {
     const token = localStorage.getItem('token');
-    router.navigate(['/']);
-    return false;
+    if (token) {
+      router.navigate(['/']);
+      return false;
+    } else {
+      return true;
+    }
   }
   return true;
 };
