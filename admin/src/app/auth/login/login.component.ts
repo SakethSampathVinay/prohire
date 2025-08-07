@@ -24,6 +24,7 @@ export class LoginComponent {
         localStorage.setItem('token', res.access_token)
         localStorage.setItem('name', res.company.name)
         localStorage.setItem('image', res.company.image)
+        localStorage.setItem('companyId', res.company.id);
         console.log(res);
       },
       error: (err) => {

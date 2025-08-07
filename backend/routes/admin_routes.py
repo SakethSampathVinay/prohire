@@ -131,9 +131,14 @@ async def get_jobs(companyId: str = Path(...), current_company: dict = Depends(g
         jobs = db.collection.find({'companyId._id': companyId})
         jobs_list = await jobs.to_list(length = None)
         
+        
         for job in jobs_list:
             job['_id'] = str(job['_id'])
             job['companyId']['_id'] = str(job['companyId']['_id'])
+
+            applications_count = await db.job_applications.count_documents({"job_id": ObjectId(job['_id'])})
+            job['applicationsCount'] = applications_count
+
         return {"message": "Jobs retrieved successfully", "jobs": jobs_list}
 
     except Exception as e:

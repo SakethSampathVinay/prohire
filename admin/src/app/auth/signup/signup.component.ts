@@ -65,6 +65,7 @@ export class SignupComponent {
         localStorage.setItem('token', response.access_token)
         localStorage.setItem('name', response.company.name)
         localStorage.setItem('image', response.company.image)    
+        localStorage.setItem("companyId", response.company.id)
         console.log(response);
         this.name = '';
         this.email = '';

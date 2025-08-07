@@ -1,1 +1,24 @@
-<p class="">manage jobs works!</p>
+<div class="overflow-x-auto">
+    <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+            <tr>
+                <th scope="col" class="px-6 py-3 border-b">#</th>
+                <th scope="col" class="px-6 py-3 border-b">Title</th>
+                <th scope="col" class="px-6 py-3 border-b">Date</th>
+                <th scope="col" class="px-6 py-3 border-b">Location</th>
+                <th scope="col" class="px-6 py-3 border-b">Applications</th>
+                <th scope="col" class="px-6 py-3 border-b">Visible</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="hover:bg-gray-50" *ngFor="let job of jobsList; let i = index">
+                <td class="px-6 py-4 border-b">{{i}}</td>
+                <td class="px-6 py-4 border-b">{{job.title}}</td>
+                <td class="px-6 py-4 border-b">{{job.date}}</td>
+                <td class="px-6 py-4 border-b">{{job.location}}</td>
+                <td class="px-6 py-4 border-b">{{job.applicationsCount}}</td>
+                <td class="px-6 py-4 border-b">{{job.isVisible}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
