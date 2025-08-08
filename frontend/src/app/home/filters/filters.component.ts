@@ -17,6 +17,15 @@ export class FiltersComponent {
   filterCategories: string[] = [];
   locationCategories: string[] = [];
 
+  isFilterVisible = false;
+  screenWidth = window.innerWidth;
+
+  ngOnInit() {
+    window.addEventListener('resize', () => {
+      this.screenWidth = window.innerWidth;
+    });
+  }
+
   @Output() filteredChanges = new EventEmitter<{
     categories: string[];
     location: string[];
