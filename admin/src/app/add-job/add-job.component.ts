@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AddJobsService } from '../services/add-jobs.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-job',
@@ -19,17 +20,19 @@ export class AddJobComponent {
     salary: '',
   };
 
-  constructor(private addJob: AddJobsService) {}
+  constructor(private addJob: AddJobsService, private toast: ToastrService) {}
 
-  onAddJob(): void{
+  onAddJob(): void {
     this.addJob.addJobs(this.data).subscribe({
       next: (res: any) => {
         console.log(res);
+        this.toast.success('Job Added Successfully');
       },
       error: (err: any) => {
         console.log(err);
+        this.toast.error('Error Adding Job');
         console.log(err.err);
-      }
-    })
+      },
+    });
   }
 }

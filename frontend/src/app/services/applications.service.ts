@@ -21,4 +21,8 @@ export class ApplicationsService {
   getAppliedJobs(): Observable<JobApplication[]> {
     return this.http.get<JobApplication[]>(`${this.backendUrl}/get-applied-jobs`, this.getAuthProviders)
   }
+
+  getUploadResume(): Observable<any> {
+    return this.http.get(`${this.backendUrl}/uploaded-resume`, this.getAuthProviders)
+  }
 }

@@ -5,7 +5,8 @@
             <div class="bg-blue-100 text-blue-600 px-4 py-2 rounded-lg mr-2">
                 Select Resume
             </div>
-            <input type="file" id="ResumeUpload" accept="application/pdf" class="" (change)="onFileSelected($event)" />
+            <input type="file" id="ResumeUpload" accept="application/pdf" class="hidden"
+                (change)="onFileSelected($event)" />
             <img [src]="assets.profile_upload_icon" alt="Upload Icon" class="w-10 h-20 ml-2" />
         </label>
         <button
@@ -31,7 +32,7 @@
                     <th class="py-3 px-4 border border-gray-300 text-left">Company</th>
                     <th class="py-3 px-4 border border-gray-300 text-left">Job Title</th>
                     <th class="py-3 px-4 border border-gray-300 text-left max-sm:hidden">Location</th>
-                    <th class="py-3 px-4 border border-gray-300 text-left max-sm:hidden">Date</th>
+                    <th class="py-3 px-4 border border-gray-300 text-left max-sm:hidden">Submitted On</th>
                     <th class="py-3 px-4 border border-gray-300 text-left">Status</th>
                 </tr>
             </thead>
@@ -43,7 +44,7 @@
                     </td>
                     <td class="py-2 px-4 border border-gray-300">{{applications.title}}</td>
                     <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.location}}</td>
-                    <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.date}}</td>
+                    <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.date | timeAgo }}</td>
                     <td class="py-2 px-4 border border-gray-300">
                         <span [ngClass]="getStatusClass(applications.status)" class="px-4 py-1.5 rounded">
                             {{applications.status}}

@@ -4,9 +4,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApplicationsService } from '../services/applications.service';
 import { UploadResumeService } from '../services/upload-resume.service';
+import { TimeAgoPipe } from '../pipes/time-ago.pipe';
+
 @Component({
   selector: 'app-applications',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TimeAgoPipe],
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.css',
 })
@@ -26,9 +28,19 @@ export class ApplicationsComponent {
     this.applications.getAppliedJobs().subscribe({
       next: (res) => {
         this.appliedJobs = res;
+        console.log(this.appliedJobs);
       },
       error: (err) => {
         console.log('Error Fetching Applied Jobs: ', err);
+      },
+    });
+
+    this.applications.getUploadResume().subscribe({
+      next: (res) => {
+        this.uploadedResumeUrl = res.resume_url;
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }

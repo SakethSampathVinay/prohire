@@ -206,3 +206,12 @@ async def upload_resume(resume: UploadFile = File(...),  user_id: str = Depends(
     
     except CloudinaryError as e:
         raise HTTPException(status_code = 500, detail = f"Cloudinary error: {str(e)}")
+
+@user_router.get("/uploaded-resume")
+async def get_uploaded_resume(user_id: str = Depends(get_current_user_id)):
+    db = get_database()
+    try:
+        resume_url = await db.users.find_one({'_id': ObjectId(user_id)}, {"resume_url": 1})
+        return {"resume_url": resume_url.get('resume_url')}
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))

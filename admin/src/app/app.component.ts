@@ -7,6 +7,7 @@ import { ManageJobsComponent } from "./manage-jobs/manage-jobs.component";
 import { AddJobComponent } from "./add-job/add-job.component";
 import { ViewApplicationsComponent } from "./view-applications/view-applications.component";
 import { HomeComponent } from "./home/home.component";
+import { ToastrModule } from 'ngx-toastr';
 
 
 @Component({
