@@ -35,4 +35,19 @@ export class ManageJobsComponent {
       },
     });
   }
+
+  toggleVisibility(job: any) {
+    this.manageJobs.toggleVisibility(job._id, job.isVisible).subscribe({
+      next: (res) => {
+        this.toast.success(
+          `Job visibility updated to: ${job.isVisible ? 'Visible' : 'Hidden'}`
+        );
+      },
+      error: (err) => {
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
+        job.isVisible = !job.isVisible;
+      },
+    });
+  }
 }

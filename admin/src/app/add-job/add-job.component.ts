@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddJobComponent {
   errorMsg = '';
-  
+
   data = {
     title: '',
     description: '',
@@ -28,6 +28,14 @@ export class AddJobComponent {
     this.addJob.addJobs(this.data).subscribe({
       next: (res: any) => {
         console.log(res);
+        this.data = {
+          title: '',
+          description: '',
+          category: '',
+          location: '',
+          level: '',
+          salary: '',
+        };
         this.toast.success('Job Added Successfully');
       },
       error: (err: any) => {

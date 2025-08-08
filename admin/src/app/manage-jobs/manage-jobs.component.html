@@ -2,22 +2,37 @@
     <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
         <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
             <tr>
-                <th scope="col" class="px-6 py-3 border-b">#</th>
-                <th scope="col" class="px-6 py-3 border-b">Title</th>
-                <th scope="col" class="px-6 py-3 border-b">Date</th>
-                <th scope="col" class="px-6 py-3 border-b">Location</th>
-                <th scope="col" class="px-6 py-3 border-b">Applications</th>
-                <th scope="col" class="px-6 py-3 border-b">Visible</th>
+                <th class="px-6 py-3 border-b border-gray-400">#</th>
+                <th class="px-6 py-3 border-b border-gray-400">Title</th>
+                <th class="px-6 py-3 border-b border-gray-400">Date</th>
+                <th class="px-6 py-3 border-b border-gray-400">Location</th>
+                <th class="px-6 py-3 border-b border-gray-400">Applications</th>
+                <th class="px-6 py-3 border-b border-gray-400">Visible</th>
             </tr>
         </thead>
         <tbody>
             <tr class="hover:bg-gray-50" *ngFor="let job of jobsList; let i = index">
-                <td class="px-6 py-4 border-b">{{i}}</td>
-                <td class="px-6 py-4 border-b">{{job.title}}</td>
-                <td class="px-6 py-4 border-b">{{job.date}}</td>
-                <td class="px-6 py-4 border-b">{{job.location}}</td>
-                <td class="px-6 py-4 border-b">{{job.applicationsCount}}</td>
-                <td class="px-6 py-4 border-b">{{job.isVisible}}</td>
+                <td class="px-6 py-4 border-b border-gray-300">{{ i + 1 }}</td>
+                <td class="px-6 py-4 border-b border-gray-300">{{ job.title }}</td>
+                <td class="px-6 py-4 border-b border-gray-300">{{ job.date | date: 'dd/MM/yyyy' }}</td>
+                <td class="px-6 py-4 border-b border-gray-300">{{ job.location }}</td>
+                <td class="px-6 py-4 border-b border-gray-300">{{ job.applicationsCount }}</td>
+                <td class="px-6 py-4 border-b border-gray-300">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" [(ngModel)]="job.isVisible"
+                            (change)="toggleVisibility(job)" />
+                        <div
+                            class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 relative transition-all duration-300">
+                            <div
+                                class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 peer-checked:translate-x-full transition-transform">
+                            </div>
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-gray-700">
+                            {{ job.isVisible ? 'Visible' : 'Not Visible' }}
+                        </span>
+                    </label>
+                </td>
+
             </tr>
         </tbody>
     </table>

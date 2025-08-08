@@ -53,7 +53,6 @@ async def admin_register(name: str = Form(...), email: str = Form(...), password
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
 
-
 @admin_router.post("/login", response_model = CompanyWithToken)
 async def admin_login(company: CompanyLogin):
     db = get_database()
@@ -206,7 +205,6 @@ async def get_company_applications(companyId: str, current_company: dict = Depen
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
 
 @admin_router.put('/update-status/{application_id}')
 async def update_application_status(application_id: str, status: str, current_company: dict = Depends(get_current_company)):

@@ -15,12 +15,21 @@ import { ToastrService } from 'ngx-toastr';
 export class LatestJobsComponent {
   jobsData = jobsData;
 
-  constructor(private latestJobsService: LatestJobsService, private toast: ToastrService) {}
+  constructor(
+    private latestJobsService: LatestJobsService,
+    private toast: ToastrService
+  ) {}
 
   ngOnInit() {
-    this.latestJobsService.getLatestJobs().subscribe((res) => {
-      this.jobs = res.Jobs;
-      this.toast.success('Successfully loaded latest jobs');
+    this.latestJobsService.getLatestJobs().subscribe({
+      next: (res) => {
+        console.log('Response:', res);
+        this.jobs = res.Jobs.filter((job: any) => job.isVisible);
+        this.toast.success('Successfully loaded latest jobs');
+      },
+      error: (err) => {
+        console.error(err);
+      },
     });
   }
 
