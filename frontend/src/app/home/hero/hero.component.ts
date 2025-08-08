@@ -30,11 +30,6 @@ export class HeroComponent {
     location: string;
   }>();
 
-  ngOnInit() {
-    console.log(this.searchQuery);
-    console.log(this.locationQuery);
-  }
-
   onSearchButton() {
     this.searchQueryChange.emit({
       job: this.searchQuery,

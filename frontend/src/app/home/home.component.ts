@@ -5,6 +5,7 @@ import { LatestJobsComponent } from './latest-jobs/latest-jobs.component';
 import { AppDowloadComponent } from './app-dowload/app-dowload.component';
 import { assets, jobsData } from '../../assets/assets';
 import { LatestJobsService } from '../services/latest-jobs.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-home',
   imports: [
@@ -20,7 +21,10 @@ export class HomeComponent {
   allJobs: any[] = [];
   filteredJobs: any[] = [];
 
-  constructor(private latestJobs: LatestJobsService) {}
+  constructor(
+    private latestJobs: LatestJobsService,
+    private toast: ToastrService
+  ) {}
 
   ngOnInit() {
     this.latestJobs.getLatestJobs().subscribe((res) => {

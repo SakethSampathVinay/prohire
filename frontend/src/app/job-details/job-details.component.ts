@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RelatedjobsComponent } from './relatedjobs/relatedjobs.component';
 import { LatestJobsService } from '../services/latest-jobs.service';
 import { ApplyNowService } from '../services/apply-now.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-job-details',
@@ -24,10 +25,13 @@ export class JobDetailsComponent {
   isApplied: boolean = false;
   applyNowDisplay: string = 'Apply Now';
 
+  errorMsg = '';
+
   constructor(
     private route: ActivatedRoute,
     private latestJobs: LatestJobsService,
-    private applyNow: ApplyNowService
+    private applyNow: ApplyNowService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit() {
@@ -36,8 +40,8 @@ export class JobDetailsComponent {
       if (this.id) {
         this.latestJobs.getLatestJobs().subscribe((res) => {
           this.jobsList = res.Jobs;
-          console.log(this.jobsList);
           this.jobDetails = this.jobsList.find((job) => job._id === this.id);
+          this.toast.success('Job details loaded successfully', 'Success');
           this.relatedJobs = this.jobsList.filter(
             (relJobs) =>
               relJobs.companyId.name === this.jobDetails.companyId.name &&
@@ -64,12 +68,14 @@ export class JobDetailsComponent {
     if (this.id) {
       this.applyNow.applyNow(this.id).subscribe({
         next: (res) => {
-          console.log(res);
+          this.toast.success('Applied Successfully', 'Success');
           this.applyNowDisplay = 'Applied';
           this.isApplied = true;
         },
         error: (err) => {
           console.log(err);
+          this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+          this.toast.error('Something went wrong', this.errorMsg);
         },
       });
     }

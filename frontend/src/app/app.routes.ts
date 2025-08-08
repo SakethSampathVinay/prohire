@@ -26,5 +26,5 @@ export const routes: Routes = [
     canActivate: [loginSignupGuard],
   },
   { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
-  // { path: '**', component: PagenotfoundComponent },
+  { path: '**', component: PagenotfoundComponent },
 ];

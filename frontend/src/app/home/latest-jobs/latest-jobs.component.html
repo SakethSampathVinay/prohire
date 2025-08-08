@@ -6,7 +6,7 @@
         <div *ngFor="let job of jobs"
             class="border border-white rounded-lg p-6 bg-white shadow-sm hover:shadow-md transition-all">
             <div class="flex items-center gap-2 mb-4">
-                <img [src]="job.companyId.image" alt="Company Logo" class="w-18 h-10 object-contain" />
+                <img [src]="job.companyId.image" alt="Company Logo" class="w-10 h-15 object-contain" />
             </div>
 
             <h3 class="text-xl font-semibold mb-2">{{ job.title }}</h3>
@@ -25,7 +25,8 @@
             </p>
 
             <div class="flex gap-3 text-sm">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-all"
+                    [routerLink]="['/jobdetails', job._id]">
                     Apply now
                 </button>
                 <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 transition-all"

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ApplicationsService } from '../services/applications.service';
 import { UploadResumeService } from '../services/upload-resume.service';
 import { TimeAgoPipe } from '../pipes/time-ago.pipe';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-applications',
@@ -19,19 +20,24 @@ export class ApplicationsComponent {
   selectedFile: File | null = null;
   uploadedResumeUrl: string = '';
 
+  errorMsg = '';
+
   constructor(
     private applications: ApplicationsService,
-    private uploadResume: UploadResumeService
+    private uploadResume: UploadResumeService,
+    private toast: ToastrService
   ) {}
 
   ngOnInit() {
     this.applications.getAppliedJobs().subscribe({
       next: (res) => {
         this.appliedJobs = res;
-        console.log(this.appliedJobs);
+        this.toast.success('Successfully retreived job applications');
       },
       error: (err) => {
         console.log('Error Fetching Applied Jobs: ', err);
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
       },
     });
 
@@ -41,6 +47,8 @@ export class ApplicationsComponent {
       },
       error: (err) => {
         console.log(err);
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
       },
     });
   }
@@ -64,16 +72,19 @@ export class ApplicationsComponent {
       this.uploadResume.onUploadResume(this.selectedFile).subscribe({
         next: (res) => {
           this.uploadedResumeUrl = res.url || res.secure_url;
-          console.log('Resume Uploaded', this.uploadedResumeUrl);
           this.isEdit = false;
+          this.toast.success('Resume uploaded successfully!!!');
         },
         error: (err) => {
           console.log('Resume upload file: ', err);
+          this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+          this.toast.error('Something went wrong', this.errorMsg);
         },
       });
     } else {
       this.isEdit = false;
       console.warn('No file selected for upload.');
+      this.toast.error('No file selected for upload');
     }
   }
 

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LatestJobsService } from '../../services/latest-jobs.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-latest-jobs',
@@ -14,12 +15,12 @@ import { LatestJobsService } from '../../services/latest-jobs.service';
 export class LatestJobsComponent {
   jobsData = jobsData;
 
-  constructor(private latestJobsService: LatestJobsService) {}
+  constructor(private latestJobsService: LatestJobsService, private toast: ToastrService) {}
 
   ngOnInit() {
     this.latestJobsService.getLatestJobs().subscribe((res) => {
       this.jobs = res.Jobs;
-      console.log(this.jobs);
+      this.toast.success('Successfully loaded latest jobs');
     });
   }
 

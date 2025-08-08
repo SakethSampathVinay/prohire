@@ -21,13 +21,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // Save the username in localStorage
-  // const username = localStorage.setItem("username", this.register.name || this.login.email);
-
   registerUser(register: any): Observable<any> {
     return this.http.post(`${this.backendUrl}/register`, register).pipe(
       tap((response: any) => {
-        console.log(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('username', response.userData.name);
       })
@@ -37,10 +33,13 @@ export class AuthService {
   loginUser(login: any): Observable<any> {
     return this.http.post(`${this.backendUrl}/login`, login).pipe(
       tap((response: any) => {
-        console.log(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('username', response.userData.name);
       })
     );
+  }
+
+  logOut(): void {
+    localStorage.clear();
   }
 }

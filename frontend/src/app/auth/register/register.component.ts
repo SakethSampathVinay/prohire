@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { response } from 'express';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -12,22 +12,32 @@ import { response } from 'express';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  errorMsg = '';
+
   registerData = {
     name: '',
     email: '',
     password: '',
   };
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toast: ToastrService
+  ) {}
 
   onRegister() {
+    this.toast.info('Hang tight! Signing you in...', 'Processing');
     this.authService.registerUser(this.registerData).subscribe({
       next: (res) => {
         localStorage.setItem('token', res.token);
         this.router.navigate(['/']);
+        this.toast.success('Successfully Signed Up');
       },
       error: (err) => {
         console.log(err);
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
       },
     });
   }

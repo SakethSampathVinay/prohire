@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { assets } from '../../assets/assets';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,7 @@ export class NavbarComponent {
   rightIcon = assets.right_arrow_icon;
   personIcon = assets.person_icon;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toast: ToastrService) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -34,5 +35,6 @@ export class NavbarComponent {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     this.router.navigate(['/register']);
+    this.toast.success('Logged out successfully', 'Success');
   }
 }
