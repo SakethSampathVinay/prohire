@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-job.component.css',
 })
 export class AddJobComponent {
+  errorMsg = '';
+  
   data = {
     title: '',
     description: '',
@@ -30,8 +32,8 @@ export class AddJobComponent {
       },
       error: (err: any) => {
         console.log(err);
-        this.toast.error('Error Adding Job');
-        console.log(err.err);
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
       },
     });
   }

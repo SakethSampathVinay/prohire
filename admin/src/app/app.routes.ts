@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { loginSignupGuard } from './guards/login-signup.guard';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   {
@@ -33,5 +34,6 @@ export const routes: Routes = [
     component: SignupComponent,
     canActivate: [loginSignupGuard],
   },
-  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] }
+  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
+  {path: '**', component: PageNotFoundComponent}
 ];

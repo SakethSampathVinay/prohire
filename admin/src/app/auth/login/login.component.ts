@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  errorMsg = '';
+
   data = {
     email: '',
     password: '',
@@ -36,6 +38,8 @@ export class LoginComponent {
       },
       error: (err) => {
         console.log(err);
+        this.errorMsg = `Error: ${err.status} ${err.statusText}`;
+        this.toast.error('Something went wrong', this.errorMsg);
       },
     });
   }
