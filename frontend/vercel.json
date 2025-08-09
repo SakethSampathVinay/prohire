@@ -1,16 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/frontend/browser",
-  "framework": null,
   "builds": [
-    { "src": "dist/frontend/server/main.js", "use": "@vercel/node" },
-    { "src": "dist/frontend/browser/**/*", "use": "@vercel/static" }
+    {
+      "src": "dist/frontend/browser/**/*",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/frontend/server/main.js"
+      "dest": "/index.html"
     }
   ]
 }
