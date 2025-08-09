@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Job, JobApplication } from '../../assets/assets';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApplicationsService {
 
-  backendUrl = 'http://127.0.0.1:8000';
+  backendUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

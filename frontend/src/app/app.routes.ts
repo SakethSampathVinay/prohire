@@ -1,30 +1,49 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { JobDetailsComponent } from './job-details/job-details.component';
-import { ApplicationsComponent } from './applications/applications.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { LoginComponent } from './auth/login/login.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { authGuard } from './guards/auth.guard';
 import { loginSignupGuard } from './guards/login-signup.guard';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./home/home.component').then((c) => c.HomeComponent),
+    canActivate: [authGuard],
+  },
   {
     path: 'jobdetails/:id',
-    component: JobDetailsComponent,
+    loadComponent: () =>
+      import('./job-details/job-details.component').then(
+        (c) => c.JobDetailsComponent
+      ),
     canActivate: [authGuard],
   },
   {
     path: 'applications',
-    component: ApplicationsComponent,
+    loadComponent: () =>
+      import('./applications/applications.component').then(
+        (c) => c.ApplicationsComponent
+      ),
     canActivate: [authGuard],
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    loadComponent: () =>
+      import('./auth/register/register.component').then(
+        (c) => c.RegisterComponent
+      ),
     canActivate: [loginSignupGuard],
   },
-  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
-  { path: '**', component: PagenotfoundComponent },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/login/login.component').then((c) => c.LoginComponent),
+    canActivate: [loginSignupGuard],
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pagenotfound/pagenotfound.component').then(
+        (c) => c.PagenotfoundComponent
+      ),
+  },
 ];
