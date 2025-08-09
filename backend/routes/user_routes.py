@@ -6,15 +6,7 @@ from utils.jwt import create_access_token, verify_access_token
 from typing import Union, List
 from bson.objectid import ObjectId
 from datetime import datetime
-import cloudinary
 import cloudinary.uploader
-
-cloudinary.config(
-    cloud_name = "dgtfgihga",
-    api_key = "989581749653354",
-    api_secret = "3Q5RzmOns5KJG2VRc0v28laS5_U",
-    secure = True
-)
 
 user_router = APIRouter()
 

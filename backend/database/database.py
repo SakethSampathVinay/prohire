@@ -1,11 +1,9 @@
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 import os 
+from config import settings
 
-MONGO_URL = "mongodb+srv://sakethsampath2006:oZea1yBIJfmBO5we@cluster0.ue2hzgm.mongodb.net/"
-DB_Name = "prohire"
-
-client = AsyncIOMotorClient(MONGO_URL)
-db: AsyncIOMotorDatabase = client[DB_Name]
+client = AsyncIOMotorClient(settings.MONGO_URL)
+db: AsyncIOMotorDatabase = client[settings.DB_Name]
 collection = db['jobs']
 user_collections = db['users']
 admin_collections = db['admins']

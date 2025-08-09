@@ -4,12 +4,6 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 from datetime import datetime
 
-# class CompanyRegister(BaseModel):
-#     name: str 
-#     email: EmailStr
-#     password: str
-#     image: str 
-
 class CompanyLogin(BaseModel):
     email: EmailStr
     password: str
