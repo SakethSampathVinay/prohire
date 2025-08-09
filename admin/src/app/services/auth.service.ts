@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   
-  backendUrl = "http://127.0.0.1:8000/admin"
+  backendUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

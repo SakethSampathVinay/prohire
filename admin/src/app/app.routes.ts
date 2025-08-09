@@ -1,39 +1,55 @@
 import { Routes } from '@angular/router';
-import { SignupComponent } from './auth/signup/signup.component';
-import { LoginComponent } from './auth/login/login.component';
-import { ManageJobsComponent } from './manage-jobs/manage-jobs.component';
-import { AddJobComponent } from './add-job/add-job.component';
-import { ViewApplicationsComponent } from './view-applications/view-applications.component';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { authGuard } from './guards/auth.guard';
 import { loginSignupGuard } from './guards/login-signup.guard';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./home/home.component').then((c) => c.HomeComponent),
     canActivate: [authGuard],
     children: [
       {
         path: 'manage-jobs',
-        component: ManageJobsComponent,
+        loadComponent: () =>
+          import('./manage-jobs/manage-jobs.component').then(
+            (c) => c.ManageJobsComponent
+          ),
         canActivate: [authGuard],
       },
-      { path: 'add-job', component: AddJobComponent, canActivate: [authGuard] },
+      {
+        path: 'add-job',
+        loadComponent: () =>
+          import('./add-job/add-job.component').then((c) => c.AddJobComponent),
+        canActivate: [authGuard],
+      },
       {
         path: 'view-applications',
-        component: ViewApplicationsComponent,
+        loadComponent: () =>
+          import('./view-applications/view-applications.component').then(
+            (c) => c.ViewApplicationsComponent
+          ),
         canActivate: [authGuard],
       },
     ],
   },
   {
     path: 'register',
-    component: SignupComponent,
+    loadComponent: () =>
+      import('./auth/signup/signup.component').then((c) => c.SignupComponent),
     canActivate: [loginSignupGuard],
   },
-  { path: 'login', component: LoginComponent, canActivate: [loginSignupGuard] },
-  {path: '**', component: PageNotFoundComponent}
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./auth/login/login.component').then((c) => c.LoginComponent),
+    canActivate: [loginSignupGuard],
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./page-not-found/page-not-found.component').then(
+        (c) => c.PageNotFoundComponent
+      ),
+  },
 ];
