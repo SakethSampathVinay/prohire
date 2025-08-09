@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && ng run frontend:server:production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs"
@@ -22,6 +22,7 @@
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.14",
     "@tailwindcss/postcss": "^4.1.11",
+    "@vercel/node": "^5.3.11",
     "express": "^4.18.2",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
