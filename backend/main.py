@@ -7,6 +7,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:4200",
+    "https://prohire-seven.vercel.app",
 ]
 
 app.add_middleware(
