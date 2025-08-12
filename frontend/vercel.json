@@ -1,9 +1,18 @@
 {
-  "version": 2,
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  },
+  "functions": {
+    "dist/frontend/server/server.mjs": {
+      "runtime": "node@18.x"
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "dist/frontend/server/server.mjs"
     }
   ]
 }
