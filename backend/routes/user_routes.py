@@ -16,14 +16,18 @@ async def register_user(user: Register):
 
     if await db.users.find_one({'email': user.email}):
         raise HTTPException(status_code = 400, detail = "Email already exists")
-
+    
     user_data = user.dict()
     user_data['password'] = hash_password(user.password)
 
-    try:
+    try:        
         result = await db.users.insert_one(user_data)
-        access_token = create_access_token(data={'sub': str(result.inserted_id)})
-        return {"message": "User Created Successfully", "status": 200, "User Data": str(user_data), "token": access_token}
+        new_user_id = result.inserted_id
+        access_token = create_access_token(data={'sub': str(new_user_id)})
+
+        user_data['_id'] = str(user_data['_id'])
+        user_data.pop("password")
+        return {"message": "User Created Successfully", "status": 200, "userData": user_data,"token": access_token}
     
     except Exception as e:
         print(e)
