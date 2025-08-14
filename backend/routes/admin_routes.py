@@ -29,7 +29,8 @@ async def admin_register(name: str = Form(...), email: str = Form(...), password
         }
 
         result = await db.admin_collections.insert_one(data)
-        token = create_access_token({"sub": email})
+        token_payload = {"sub": str(result.inserted_id)}
+        token = create_access_token(token_payload)
 
         return CompanyWithToken(
             access_token = token,
@@ -37,7 +38,6 @@ async def admin_register(name: str = Form(...), email: str = Form(...), password
                 id = str(result.inserted_id),
                 name = name,
                 email = email,
-                password = password,
                 image = image_url,
             )
         )
@@ -50,7 +50,7 @@ async def admin_login(company: CompanyLogin):
     db = get_database()
 
     if not (company.email and company.password):
-        raise HTTPException(status_code = 500, detail = "Missing required fields.")
+        raise HTTPException(status_code = 400, detail = "Missing required fields.")
     
     email_find = await db.admin_collections.find_one({"email": company.email})
     if not email_find:
@@ -58,7 +58,7 @@ async def admin_login(company: CompanyLogin):
     
     try:
         if verify_password(company.password, email_find['password']):
-            access_token = create_access_token(data = {"subject": company.email})
+            access_token = create_access_token(data = {"sub": str(email_find['_id'])})
             print(access_token)
             return {
                 "access_token": access_token,
@@ -80,12 +80,12 @@ async def get_current_company(authorization: str = Header(...)):
     token = authorization.split(" ")[1]
     try:
         payload = verify_access_token(token)
-        email = payload.get("subject")
-        if not email:
+        company_id  = payload.get("sub")
+        if not company_id:
             raise HTTPException(status_code = 401, detail = "Invalid token")
         
         db = get_database()
-        company = await db.admin_collections.find_one({"email": email})
+        company = await db.admin_collections.find_one({'_id': ObjectId(company_id)})
         if not company:
             raise HTTPException(status_code = 404, detail = "Company not found")
         return company
