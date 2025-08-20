@@ -44,7 +44,7 @@
                     </td>
                     <td class="py-2 px-4 border border-gray-300">{{applications.title}}</td>
                     <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.location}}</td>
-                    <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.date | timeAgo }}</td>
+                    <td class="py-2 px-4 border border-gray-300 max-sm:hidden">{{applications.date | date }}</td>
                     <td class="py-2 px-4 border border-gray-300">
                         <span [ngClass]="getStatusClass(applications.status)" class="px-4 py-1.5 rounded">
                             {{applications.status}}

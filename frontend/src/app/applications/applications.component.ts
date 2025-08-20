@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-applications',
-  imports: [CommonModule, FormsModule, TimeAgoPipe],
+  imports: [CommonModule, FormsModule],
   templateUrl: './applications.component.html',
   styleUrl: './applications.component.css',
 })
