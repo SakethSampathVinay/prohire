@@ -108,7 +108,8 @@ async def apply_jobs(job_id: str, user_id: str = Depends(get_current_user_id)):
             raise HTTPException(status_code = 400, detail = "Already Applied for this Job.")
         
         user = await db.users.find_one({'_id': ObjectId(user_id)})
-        if not user or 'resume_url' not in user:
+        print(user)
+        if not user or 'resume_url' == '' or 'resume_url' not in user:
             raise HTTPException(status_code = 400, detail = "Resume not found")
 
         result = await db.job_applications.insert_one({
@@ -119,8 +120,9 @@ async def apply_jobs(job_id: str, user_id: str = Depends(get_current_user_id)):
             "isApplied": True,
             "resume_url": user['resume_url']
         })
+
         
-        return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id) , "job_id": job_id, "user_id": user_id, "isApplied": True}
+        return {"Message": "Job Applied Successfully","application_id": str(result.inserted_id), 'resume_url': user.get('resume_url', ''), "job_id": job_id, "user_id": user_id, "isApplied": True}
     
     except Exception as e:
         raise HTTPException(status_code = 401, detail = str(e))

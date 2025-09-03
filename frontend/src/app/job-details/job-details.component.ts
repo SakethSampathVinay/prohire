@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { assets, jobsData } from '../../assets/assets';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RelatedjobsComponent } from './relatedjobs/relatedjobs.component';
 import { LatestJobsService } from '../services/latest-jobs.service';
 import { ApplyNowService } from '../services/apply-now.service';
@@ -29,21 +29,22 @@ export class JobDetailsComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private latestJobs: LatestJobsService,
     private applyNow: ApplyNowService,
     private toast: ToastrService
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe((params: any) => {
       this.id = params.get('id');
       if (this.id) {
-        this.latestJobs.getLatestJobs().subscribe((res) => {
+        this.latestJobs.getLatestJobs().subscribe((res: any) => {
           this.jobsList = res.Jobs;
           this.jobDetails = this.jobsList.find((job) => job._id === this.id);
           this.toast.success('Job details loaded successfully', 'Success');
           this.relatedJobs = this.jobsList.filter(
-            (relJobs) =>
+            (relJobs: any) =>
               relJobs.companyId.name === this.jobDetails.companyId.name &&
               relJobs._id !== this.id
           );
@@ -52,13 +53,13 @@ export class JobDetailsComponent {
     });
 
     this.applyNow.checkIfApplied(this.id).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         if (res.isApplied) {
           this.applyNowDisplay = 'Applied';
           this.isApplied = true;
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.log(err);
       },
     });
@@ -73,9 +74,9 @@ export class JobDetailsComponent {
           this.isApplied = true;
         },
         error: (err) => {
-          console.log(err);
-          this.errorMsg = `Error: ${err.status} ${err.statusText}`;
-          this.toast.error('Something went wrong', this.errorMsg);
+          this.errorMsg = `Error: ${err.error?.detail}`;
+          this.router.navigate(['/applications']);
+          this.toast.error(this.errorMsg);
         },
       });
     }

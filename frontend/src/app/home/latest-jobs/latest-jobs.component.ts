@@ -22,12 +22,11 @@ export class LatestJobsComponent {
 
   ngOnInit() {
     this.latestJobsService.getLatestJobs().subscribe({
-      next: (res) => {
-        console.log('Response:', res);
+      next: (res: any) => {
         this.jobs = res.Jobs.filter((job: any) => job.isVisible);
         this.toast.success('Successfully loaded latest jobs');
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error(err);
       },
     });
