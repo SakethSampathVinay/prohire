@@ -8,15 +8,16 @@ app = FastAPI()
 origins = [
     "http://localhost:4200",
     "https://prohire-seven.vercel.app",
-    "https://prohire-8yjv.vercel.app"
+    "https://prohire-8yjv.vercel.app",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,          
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.app\.github\.dev",
     allow_credentials=True,
-    allow_methods=["*"],            
-    allow_headers=["*"],            
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
