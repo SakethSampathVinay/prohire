@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: "https://prohire-production.up.railway.app"
+    apiUrl: "prohire-production.up.railway.app"
 }
